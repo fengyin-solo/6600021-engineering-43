@@ -20,8 +20,12 @@ export function textToBraille(text: string): number[][] {
 }
 
 export function brailleToText(dots: number[]): string {
+  const sortedDots = JSON.stringify([...dots].sort())
   for (const [char, d] of Object.entries(BRAILLE_MAP)) {
-    if (JSON.stringify(d.sort()) === JSON.stringify([...dots].sort())) return char
+    if (/^[A-Z ]$/.test(char) && JSON.stringify([...d].sort()) === sortedDots) return char
+  }
+  for (const [char, d] of Object.entries(BRAILLE_MAP)) {
+    if (JSON.stringify([...d].sort()) === sortedDots) return char
   }
   return '?'
 }
